@@ -1,1 +1,2 @@
-<app-blank></app-blank>
+<app-blank (textEvent)="setTextRealTime($event)"></app-blank>
+<app-counters [textToCount]="textRealTime"></app-counters>

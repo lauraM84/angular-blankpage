@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, output } from '@angular/core';
 import { Event } from '@angular/router';
 import { BlankpageService } from '../../services/blankpage.service';
 
@@ -10,13 +10,16 @@ import { BlankpageService } from '../../services/blankpage.service';
 })
 export class BlankComponent {
 
-  service = inject(BlankpageService)
+  service = inject(BlankpageService);
 
-  autoSave() {
+  textEvent = output<string>()
+
+  getText() {
     const element: HTMLElement | null = document.querySelector('.container');
     if (element) {
       const text = element.innerText;
-      this.service.loadText(text)
+      this.service.loadText(text);
+      this.textEvent.emit(text);
     }
   }
 
