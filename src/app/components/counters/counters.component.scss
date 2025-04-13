@@ -1,0 +1,24 @@
+.counter-sidebar {
+    width: 200px;
+    padding: 1rem;
+    background-color: #f0f4f2;
+    border-left: 1px solid #d0e0d6;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: 0.95rem;
+    color: #555;
+}
+
+.counter {
+    background-color: #dce9e1;
+    border: 1px solid #c0d3ca;
+    padding: 0.75rem;
+    border-radius: 8px;
+    width: 100%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.counter p {
+    margin: 0.25rem 0;
+}

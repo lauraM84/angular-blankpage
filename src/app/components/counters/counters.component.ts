@@ -1,5 +1,5 @@
 import { Component, computed, inject, input } from '@angular/core';
-import { BlankpageService } from '../../services/blankpage.service';
+import { NotesService } from '../../services/notes.service';
 
 @Component({
   selector: 'app-counters',
@@ -8,10 +8,15 @@ import { BlankpageService } from '../../services/blankpage.service';
   styleUrl: './counters.component.scss'
 })
 export class CountersComponent {
-  service = inject(BlankpageService)
+  service = inject(NotesService)
 
-  textToCount = input<string>();
+  textToCount = input<string>('');
 
-  wordsNumber = computed(() => '' + this.textToCount.length)
+  charsNumber = computed(() => '' + this.textToCount().length)
+
+  wordsNumber = computed(() => {
+    const text = this.textToCount().trim();
+    return '' + (text ? text.split(/\s+/).length : 0);
+  });
 
 }

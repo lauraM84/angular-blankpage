@@ -1,59 +1,118 @@
-# AngularBlankpage
+# 🗒️ Blank Notes App – Struttura e Architettura
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.6.
+Questa applicazione è una semplice "blank page" per prendere appunti, con supporto al salvataggio locale, conteggio parole/caratteri e gestione di più note tramite una sidebar. Include anche un'opzione per cambiare tema chiaro/scuro.
 
-## Development server
+---
 
-To start a local development server, run:
+## 🧱 Struttura dei Componenti
 
-```bash
-ng serve
+```
+AppComponent
+│
+├── HeaderComponent
+│   ├── Pulsante "Nuova Nota"
+│   └── Switch tema Chiaro/Scuro
+│
+└── NotesContainerComponent ← COMPONENTE COORDINATORE
+    │
+    ├── SidebarComponent
+    │   ├── Elenco note salvate
+    │   └── Selezione nota attiva
+    │
+    └── EditorComponent
+        ├── Area contenteditable (testo nota)
+        └── CounterComponent
+            ├── Conteggio parole
+            └── Conteggio caratteri
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+---
 
-## Code scaffolding
+## 🧠 Logica dell'app
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+L'app è strutturata seguendo il principio della **separazione tra logica e presentazione**, usando un componente coordinatore centrale (`NotesContainerComponent`) che gestisce lo stato e la logica principale, e componenti figli semplici e riutilizzabili, responsabili della sola visualizzazione e interazione con l’utente.
 
-```bash
-ng generate component component-name
+---
+
+## 🧩 Ruoli dei Componenti
+
+### `AppComponent`
+Componente radice. Gestisce il layout generale e contiene `Header` e `NotesContainer`.
+
+### `HeaderComponent`
+Contiene:
+- Pulsante **"Nuova nota"** che chiede al coordinatore di crearne una nuova
+- Switch per passare dalla **modalità chiara a quella scura**
+
+### `NotesContainerComponent` (💡 Coordinatore)
+Gestisce:
+- Stato attuale (lista note, nota selezionata)
+- Creazione, selezione e salvataggio note
+- Comunicazione tra `SidebarComponent` e `EditorComponent`
+
+### `SidebarComponent`
+Mostra l'elenco delle note salvate  
+Permette all'utente di selezionare una nota da modificare
+
+### `EditorComponent`
+Contiene:
+- Area modificabile (`<div contenteditable>`) per il contenuto della nota
+- Riferimento alla **nota corrente**
+- Emissione di eventi per i cambiamenti di testo
+
+### `CounterComponent`
+Visualizza il numero di parole e caratteri della nota corrente  
+Riceve il testo come `@Input()` e aggiorna i conteggi
+
+---
+
+## 🛠️ Servizi
+
+### `NotesService`
+Gestisce la logica di CRUD per le note, salvandole nel `localStorage`.
+
+Funzionalità principali:
+- `getNotes()`: ottieni tutte le note
+- `getNote(id)`: ottieni una nota specifica
+- `createNote()`: crea una nuova nota
+- `saveNote(note)`: salva una nota
+- `deleteNote(id)`: elimina una nota
+
+### `ThemeService`
+Gestisce il tema chiaro/scuro dell'app.  
+Salva la preferenza nel `localStorage` e applica dinamicamente le classi al DOM.
+
+---
+
+## 📦 Struttura delle cartelle consigliata
+
+```
+src/
+├── app/
+│   ├── components/
+│   │   ├── header/
+│   │   ├── sidebar/
+│   │   ├── notes-container/
+│   │   ├── editor/
+│   │   └── counter/
+│   │
+│   ├── services/
+│   │   ├── notes.service.ts
+│   │   └── theme.service.ts
+│   │
+│   ├── models/
+│   │   └── note.model.ts
+│   │
+│   ├── app.component.ts
+│   └── app.module.ts
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+---
 
-```bash
-ng generate --help
-```
+## ✅ Best Practice Angular Seguite
 
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- ✅ Smart/Dumb components
+- ✅ Separazione delle responsabilità
+- ✅ Utilizzo di Signal API (`input()`, `output()`, `computed()`)
+- ✅ Persistenza locale con `localStorage`
+- ✅ Tema dinamico
