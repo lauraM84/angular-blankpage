@@ -4,3 +4,20 @@
     background-color: #f5f8f6;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
+
+.col {
+    padding: 1rem;
+    border: 1px solid #ccc;
+}
+
+/* colonne laterali più piccole */
+.left,
+.right {
+    flex: 1;
+}
+
+/* colonna centrale più grande */
+.content {
+    flex: 3;
+}

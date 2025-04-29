@@ -1,5 +1,6 @@
+<app-header (newNote)="createNewNote()"></app-header>
 <div class="notes-container">
-    <app-editor (textEvent)="setTextRealTime($event)" [initialText]="initialText"></app-editor>
-    <app-counters [textToCount]="textRealTime"></app-counters>
-
+    <app-sidebar class="col left"></app-sidebar>
+    <app-editor class="content" (textEvent)="setTextRealTime($event)" [initialText]="initialText"></app-editor>
+    <app-counters class="col right" [textToCount]="textRealTime"></app-counters>
 </div>

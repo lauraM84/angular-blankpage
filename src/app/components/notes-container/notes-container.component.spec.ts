@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NotesContainerComponent } from './notes-container.component';
+import { Component } from '@angular/core';
+import { NotesService } from '../../services/notes.service';
 
 describe('HomeComponent', () => {
   let component: NotesContainerComponent;
