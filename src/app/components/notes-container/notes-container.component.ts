@@ -1,9 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import { EditorComponent } from "../editor/editor.component";
 import { CountersComponent } from "../counters/counters.component";
 import { NotesService } from '../../services/notes.service';
 import { HeaderComponent } from '../header/header.component';
 import { SidebarComponent } from "../sidebar/sidebar.component";
+import { Note } from '../../models/note';
 
 @Component({
   selector: 'app-notes-container',
@@ -12,27 +13,42 @@ import { SidebarComponent } from "../sidebar/sidebar.component";
   styleUrl: './notes-container.component.scss'
 })
 export class NotesContainerComponent {
-
   service = inject(NotesService);
 
-  textRealTime: string;
+  editing: Note | null = null;
+  text: string;
 
   initialText: string;
 
+  @ViewChild(EditorComponent) editor!: EditorComponent;
+
   constructor() {
     this.initialText = this.service.getSavedText() || '';
-    this.textRealTime = this.initialText;
+    this.text = this.initialText;
+  }
+
+  onNoteSelected(note: Note) {
+    this.editing = note;
+    this.editor.reset(note.content);
   }
 
   createNewNote(): void {
-    console.log('Creating new note...');
-    this.service.createNote();
+    if (this.editing === null) {
+      console.log('Saving new note...');
+      this.service.saveNote(this.text);
+    }
+    else {
+      console.log('Updating note...');
+      this.service.updateNote(this.editing, this.text);
+    }
+    this.editing = null;
+    this.editor.reset();
   }
 
 
-  setTextRealTime(text: string) {
-    this.textRealTime = text;
-    this.service.loadText(text);
+  textChange(text: string) {
+    this.text = text;
+    this.service.textChange(text);
   }
 
 }

@@ -1,1 +1,3 @@
-<div class="editor" contenteditable (input)="getText()"> {{ initialText() }}</div>
+<div class="editor" contenteditable (input)="emitText()" #editorRef>
+    {{ text() }}
+</div>

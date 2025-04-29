@@ -1,4 +1,4 @@
-import { Component, inject, input, output } from '@angular/core';
+import { Component, ElementRef, inject, input, output, ViewChild } from '@angular/core';
 import { Event } from '@angular/router';
 
 
@@ -10,16 +10,19 @@ import { Event } from '@angular/router';
 })
 export class EditorComponent {
 
-  initialText = input<string>('');
+  text = input<string>('');
+  textChange = output<string>()
+  @ViewChild('editorRef') editorRef!: ElementRef<HTMLElement>;
 
-  textEvent = output<string>()
-
-  getText() {
-    const element: HTMLElement | null = document.querySelector('.editor');
-    if (element) {
-      const text = element.innerText;
-      this.textEvent.emit(text);
-    }
+  emitText() {
+    const current = this.editorRef?.nativeElement?.innerText ?? '';
+    this.textChange.emit(current); // emetti il contenuto
   }
 
+  reset(text = '') {
+    if (this.editorRef) {
+      this.editorRef.nativeElement.innerText = text; // reset al valore originale
+      this.emitText(); // aggiorna anche il valore esterno
+    }
+  }
 }
